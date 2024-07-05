@@ -1,0 +1,175 @@
+{% extends 'cripto/base.html' %}
+{% load static %}
+
+{% block title %}Criptoactivos - Mi Sitio{% endblock %}
+
+{% block content %}
+
+
+      <div class="form-container">
+        <h2>COMPRA DE CRIPTOACTIVOS</h2>
+        <form class="form">
+            <div class="form-group">
+                <label for="first-name">Nombre</label>
+                <input type="text" id="first-name" name="first-name" required="">
+            </div>
+            <div class="form-group">
+                <label for="last-name">Apellido</label>
+                <input type="text" id="last-name" name="last-name" required="">
+            </div>
+            <div class="form-group">
+                <label for="run">RUN</label>
+                <input type="text" id="run" name="run" placeholder="12345678-9" required="">
+            </div>
+            <div class="form-group">
+                <label for="cryptocurrency">Criptomoneda</label>
+                <select id="cryptocurrency" name="cryptocurrency" required="">
+                    <option value="" disabled selected>Selecciona una criptomoneda</option>
+                    <!-- Aquí se insertarán las opciones de criptoactivos -->
+                </select>
+                <img id="crypto-icon" src="" alt="" style="max-width: 50px; max-height: 50px;">
+            </div>
+            <div class="form-group">
+                <label for="local-currency-amount">Monto en moneda local</label>
+                <input type="number" id="local-currency-amount" name="local-currency-amount" required="">
+            </div>
+            <div class="form-group">
+                <label for="crypto-amount">Cantidad de criptomonedas</label>
+                <input type="number" id="crypto-amount" name="crypto-amount" readonly>
+            </div>
+            <button class="form-submit-btn" type="submit">Comprar</button>
+        </form>
+        <div id="purchase-message" style="display: none;"></div>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            let coins; // Variable para almacenar la lista de criptomonedas
+    
+            const settings = {
+                async: true,
+                crossDomain: true,
+                url: 'https://coinranking1.p.rapidapi.com/coins?referenceCurrencyUuid=yhjMzLPhuIDl&timePeriod=24h&tiers%5B0%5D=1&orderBy=marketCap&orderDirection=desc&limit=50&offset=0',
+                method: 'GET',
+                headers: {
+                    'X-RapidAPI-Key': '64ece04b01msh85470598e5a401ep1aa9e0jsnbf616c56aa0d',
+                    'X-RapidAPI-Host': 'coinranking1.p.rapidapi.com'
+                }
+            };
+    
+            $.ajax(settings).done(function (response) {
+                coins = response.data.coins; // Almacena la lista de criptomonedas
+    
+                const selectCryptocurrency = $('#cryptocurrency');
+    
+                // Iterar sobre los criptoactivos y agregar opciones al select
+                for (let i = 0; i < coins.length; i++) {
+                    const coin = coins[i];
+                    const option = $('<option>').attr('value', coin.symbol).text(coin.symbol);
+                    selectCryptocurrency.append(option);
+                }
+            });
+    
+            // Calcula la cantidad de criptomonedas basada en el monto ingresado y el valor de mercado
+            function calculateCryptoAmount() {
+                var selectedCrypto = $('#cryptocurrency').val();
+                var selectedCoin = coins.find(coin => coin.symbol === selectedCrypto);
+                var marketPrice = selectedCoin ? selectedCoin.price : 0;
+                var localCurrencyAmount = $('#local-currency-amount').val();
+                var cryptoAmount = localCurrencyAmount / marketPrice;
+                $('#crypto-amount').val(cryptoAmount.toFixed(8)); // Ajusta el número de decimales según sea necesario
+            }
+    
+            // Actualiza la cantidad de criptomonedas cuando se cambia el monto en moneda local
+            $('#local-currency-amount').on('input', calculateCryptoAmount);
+    
+            // Actualiza la cantidad de criptomonedas cuando se cambia la criptomoneda seleccionada
+            $('#cryptocurrency').change(calculateCryptoAmount);
+    
+            // Selecciona el formulario y agrega un evento submit
+            $('form.form').submit(function (e) {
+                // Detiene el envío del formulario
+                e.preventDefault();
+    
+                // Realiza la validación de los campos
+                var firstName = $('#first-name').val();
+                var lastName = $('#last-name').val();
+                var run = $('#run').val();
+                var cryptocurrency = $('#cryptocurrency').val();
+                var amount = $('#amount').val();
+    
+                // Verifica si el campo de nombre está vacío
+                if (firstName === '') {
+                    showMessage('Por favor ingresa tu nombre.');
+                    return;
+                }
+    
+                // Verifica si el campo de apellido está vacío
+                if (lastName === '') {
+                    showMessage('Por favor ingresa tu apellido.');
+                    return;
+                }
+    
+                // Verifica si el campo de RUN está vacío
+                if (run === '') {
+                    showMessage('Por favor ingresa tu RUN.');
+                    return;
+                }
+    
+                // Verifica si el formato del RUN es válido
+                if (!isValidRun(run)) {
+                    showMessage('Por favor ingresa un RUN válido (formato: 12345678-9).');
+                    return;
+                }
+    
+                // Verifica si se ha seleccionado una criptomoneda
+                if (cryptocurrency === '') {
+                    showMessage('Por favor selecciona una criptomoneda.');
+                    return;
+                }
+    
+                // Verifica si se ha ingresado un monto válido
+                if (isNaN(amount) || amount <= 0) {
+                    showMessage('Por favor ingresa un monto válido.');
+                    return;
+                }
+    
+                // Muestra el mensaje de compra
+                var message = `¡Compra realizada! Has adquirido ${amount} ${cryptocurrency}.`;
+                $('#purchase-message').text(message).show();
+    
+                // Reinicia el formulario
+                $(this).trigger('reset');
+            });
+    
+            // Actualizar el icono y el símbolo cuando se seleccione una criptomoneda
+            $('#cryptocurrency').change(function () {
+                const selectedCrypto = $(this).val();
+                const selectedCoin = coins.find(coin => coin.symbol === selectedCrypto);
+                const iconUrl = selectedCoin ? selectedCoin.iconUrl : '';
+    
+                $('#crypto-icon').attr('src', iconUrl);
+            });
+    
+            function showMessage(message, type = 'error') {
+                var messageElement = $('<div>').addClass('message ' + type).text(message);
+                $('.form-container').append(messageElement);
+                setTimeout(function () {
+                    messageElement.fadeOut('slow');
+                }, 3000);
+            }
+    
+            function isValidRun(run) {
+                // Expresión regular para validar el formato del RUN (12345678-9)
+                var runRegex = /^\d{7,8}-[\dkK]$/;
+                return runRegex.test(run);
+            }
+        });
+    </script>
+    
+    
+    
+
+    
+    {% endblock %}

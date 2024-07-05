@@ -1,0 +1,16 @@
+{% extends 'cripto/base.html' %}
+{% load static %}
+
+{% block title %}Iniciar Sesión{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>Iniciar sesión</h2>
+    <form class="form-group" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Iniciar sesión</button>
+    </form>
+    <a href="{% url 'registro' %}">¿No tienes cuenta? Regístrate aquí</a>
+</div>
+{% endblock %}

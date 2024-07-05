@@ -1,0 +1,96 @@
+<!-- cripto/templates/cripto/comprar.html -->
+{% extends 'cripto/base.html' %}
+{% load static %}
+
+{% block title %}Criptoactivos - Mi Sitio{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>COMPRA DE CRIPTOACTIVOS</h2>
+    <form class="form" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="first-name">Nombre</label>
+            <input type="text" id="first-name" name="first-name" value="{{ user.first_name }}" readonly>
+        </div>
+        <div class="form-group">
+            <label for="last-name">Apellido</label>
+            <input type="text" id="last-name" name="last-name" value="{{ user.last_name }}" readonly>
+        </div>
+        <div class="form-group">
+            <label for="run">RUN</label>
+            <input type="text" id="run" name="run" placeholder="12345678-9" required>
+        </div>
+        <div class="form-group">
+            <label for="cryptocurrency">Criptomoneda</label>
+            <select id="cryptocurrency" name="cryptocurrency" required>
+                <option value="" disabled selected>Selecciona una criptomoneda</option>
+                <!-- Aquí se insertarán las opciones de criptoactivos -->
+            </select>
+            <img id="crypto-icon" src="" alt="" style="max-width: 50px; max-height: 50px;">
+        </div>
+        <div class="form-group">
+            <label for="local-currency-amount">Monto en moneda local</label>
+            <input type="number" id="local-currency-amount" name="local-currency-amount" required>
+        </div>
+        <div class="form-group">
+            <label for="crypto-amount">Cantidad de criptomonedas</label>
+            <input type="number" id="crypto-amount" name="crypto-amount" readonly>
+        </div>
+        <button class="form-submit-btn" type="submit">Comprar</button>
+    </form>
+    <div id="purchase-message" style="display: none;"></div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        let coins;
+
+        const settings = {
+            async: true,
+            crossDomain: true,
+            url: 'https://coinranking1.p.rapidapi.com/coins?referenceCurrencyUuid=yhjMzLPhuIDl&timePeriod=24h&tiers%5B0%5D=1&orderBy=marketCap&orderDirection=desc&limit=50&offset=0',
+            method: 'GET',
+            headers: {
+                'X-RapidAPI-Key': '64ece04b01msh85470598e5a401ep1aa9e0jsnbf616c56aa0d',
+                'X-RapidAPI-Host': 'coinranking1.p.rapidapi.com'
+            }
+        };
+
+        $.ajax(settings).done(function (response) {
+            coins = response.data.coins;
+
+            const selectCryptocurrency = $('#cryptocurrency');
+
+            for (let i = 0; i < coins.length; i++) {
+                const coin = coins[i];
+                const option = $('<option>').attr('value', coin.symbol).text(coin.symbol);
+                selectCryptocurrency.append(option);
+            }
+        });
+
+        function calculateCryptoAmount() {
+            var selectedCrypto = $('#cryptocurrency').val();
+            var selectedCoin = coins.find(coin => coin.symbol === selectedCrypto);
+            var marketPrice = selectedCoin ? selectedCoin.price : 0;
+            var localCurrencyAmount = $('#local-currency-amount').val();
+            var cryptoAmount = localCurrencyAmount / marketPrice;
+            $('#crypto-amount').val(cryptoAmount.toFixed(8));
+        }
+
+        $('#local-currency-amount').on('input', calculateCryptoAmount);
+        $('#cryptocurrency').change(calculateCryptoAmount);
+
+        $('#cryptocurrency').change(function () {
+            const selectedCrypto = $(this).val();
+            const selectedCoin = coins.find(coin => coin.symbol === selectedCrypto);
+            const iconUrl = selectedCoin ? selectedCoin.iconUrl : '';
+            $('#crypto-icon').attr('src', iconUrl);
+        });
+    });
+</script>
+
+
+
+{% endblock %}

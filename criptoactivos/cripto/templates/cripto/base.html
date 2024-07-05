@@ -1,0 +1,95 @@
+<!-- cripto/templates/cripto/base.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Mi Sitio{% endblock title %}</title>
+    <link rel="stylesheet" href="{% static 'cripto/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'cripto/css/style_carrusel.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    {% block bootstrap_css %}{% endblock %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+
+    <div class="page-container">
+        <nav class="navbar">
+            <!-- LOGO -->
+            <div class="logo"><img src="{% static 'cripto/images/LogoBlanco_completo.png' %}" alt=""></div>
+        
+            <!-- NAVIGATION MENU -->
+            <ul class="nav-links">
+                <!-- USING CHECKBOX HACK -->
+                <input type="checkbox" id="checkbox_toggle" />
+                <label for="checkbox_toggle" class="hamburger">&#9776;</label>
+        
+                <!-- NAVIGATION MENUS -->
+                <div class="menu">
+                    <li><a href="{% url 'index' %}">Inicio</a></li>
+                    <li><a href="{% url 'criptoactivos' %}">Criptoactivos</a></li>
+        
+                    <li class="services">
+                        <a href="#">Servicios</a>
+                        <!-- DROPDOWN MENU -->
+                        <ul class="dropdown">
+                            <li><a href="{% url 'comprar' %}">Comprar</a></li>
+                            <li><a href="{% url 'vender' %}">Vender</a></li>
+                            {% if not user.is_authenticated %}
+                                <li><a href="{% url 'registro' %}">Regístrate</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+        
+                    <li><a href="{% url 'nosotros' %}">Nosotros</a></li>
+                    <li><a href="{% url 'contacto' %}">Contacto</a></li>
+        
+                    {% if user.is_authenticated %}
+                        <li>Hola, {{ user.username }}</li>
+                        <li><a href="{% url 'mis_compras' %}">Mis Compras</a></li> <!-- Nuevo enlace a Mis Compras -->
+                        <div class="register-button">
+                            <a href="{% url 'exit' %}">Cerrar Sesión</a>
+                        </div>
+                    {% else %}
+                        <div class="register-button">
+                            <a href="{% url 'login' %}">Iniciar Sesión</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </ul>
+        </nav>
+
+        <!-- Main content block where page-specific content will be loaded -->
+        <div class="content-wrap">
+            {% block content %}
+            {% endblock content %}
+        </div>
+
+        <footer class="footer">
+            <div class="footer-left">
+                <img src="{% static 'cripto/images/LogoBlanco.png' %}" alt="Logo">
+            </div>
+            <div class="footer-right">
+                <p>¡Únete a la revolución de las criptomonedas con Cryptomoney! Compra, vende e intercambia de forma segura y sencilla. Contáctanos: +56 9 9856 7854 / Contáctanos: <a href="mailto:contacto@cryptomonei.com">contacto@cryptomonei.com</a>. Síguenos: <a href="https://x.com/home">X</a> - <a href="https://www.instagram.com/tu_usuario">Instagram</a> - <a href="https://t.me/tu_canal">Telegram</a>.</p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+    <script>
+        $(".custom-carousel").owlCarousel({
+            autoWidth: true,
+            loop: true
+        });
+        $(document).ready(function () {
+            $(".custom-carousel .item").click(function () {
+                $(".custom-carousel .item").not($(this)).removeClass("active");
+                $(this).toggleClass("active");
+            });
+        });
+    </script>
+
+</body>
+</html>

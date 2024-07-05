@@ -1,0 +1,21 @@
+.modal-body{
+    color: black;
+}
+.modal-title{
+    color:black
+}
+.container-bg {
+    background-image: url('images/cripto.r.jpg');
+    background-size: cover; /* Para cubrir todo el fondo */
+    background-position: center; /* Centrar la imagen */
+    padding: 10px; /* Espacio alrededor del contenido */
+    border-radius: 10px; /* Bordes redondeados */
+}
+
+.navbar-brand img {
+    width: 130px; /* Ajustar el tamaño del logo */
+    margin-right: 0px; /* Espacio entre el logo y el texto */
+}
+.logo {
+        display: inline-block; /* Alinear el logo con el texto */
+    }

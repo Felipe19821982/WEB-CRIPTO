@@ -1,0 +1,48 @@
+
+{% extends 'cripto/base.html' %}
+{% load static %}
+
+{% block title %}Criptoactivos - Mi Sitio{% endblock %}
+
+{% block content %}
+
+      
+        <div class="centered">
+          <div class="container_card" id="datos"></div>
+        </div>
+
+        <script>
+          const settings = {
+              async: true,
+              crossDomain: true,
+              url: 'https://coinranking1.p.rapidapi.com/coins?referenceCurrencyUuid=yhjMzLPhuIDl&timePeriod=24h&tiers%5B0%5D=1&orderBy=marketCap&orderDirection=desc&limit=50&offset=0',
+              method: 'GET',
+              headers: {
+                  'X-RapidAPI-Key': '64ece04b01msh85470598e5a401ep1aa9e0jsnbf616c56aa0d',
+                  'X-RapidAPI-Host': 'coinranking1.p.rapidapi.com'
+              }
+          };
+  
+          $.ajax(settings).done(function (response) {
+              const coins = response.data.coins;
+              const datosContainer = $("#datos");
+  
+              for (let i = 0; i < 20; i++) {
+                  const coin = coins[i];
+                  const card = $("<div class='card_b'>"); // Crear una nueva tarjeta
+                  card.html(`
+                      <img src="${coin.iconUrl}" alt="${coin.name}">
+                      <p>Criptoactivo: ${coin.name}</p>
+                      <p>Símbolo: ${coin.symbol}</p>
+                      <p>Precio: ${coin.price}</p>
+                      <p>Capitalización de mercado: ${coin.marketCap}</p>
+                  `);
+                  datosContainer.append(card);
+              }
+          });
+      </script>
+      
+</body>
+
+
+{% endblock %}

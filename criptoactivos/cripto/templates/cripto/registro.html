@@ -1,0 +1,67 @@
+<!-- cripto/templates/cripto/comprar.html -->
+{% extends 'cripto/base.html' %}
+{% load static %}
+
+{% block title %}Criptoactivos - Mi Sitio{% endblock %}
+
+{% block content %}
+<div class="form-container">
+    <h2>REGISTRATE EN CRIPTOMONEY</h2>
+    <form class="form-group" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button class="form-submit-btn" type="submit">Registrarse</button>
+    </form>
+    <div id="purchase-message" style="display: none;"></div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        let coins;
+
+        const settings = {
+            async: true,
+            crossDomain: true,
+            url: 'https://coinranking1.p.rapidapi.com/coins?referenceCurrencyUuid=yhjMzLPhuIDl&timePeriod=24h&tiers%5B0%5D=1&orderBy=marketCap&orderDirection=desc&limit=50&offset=0',
+            method: 'GET',
+            headers: {
+                'X-RapidAPI-Key': '64ece04b01msh85470598e5a401ep1aa9e0jsnbf616c56aa0d',
+                'X-RapidAPI-Host': 'coinranking1.p.rapidapi.com'
+            }
+        };
+
+        $.ajax(settings).done(function (response) {
+            coins = response.data.coins;
+            const selectCryptocurrency = $('#id_cryptocurrency');
+            for (let i = 0; i < coins.length; i++) {
+                const coin = coins[i];
+                const option = $('<option>').attr('value', coin.symbol).text(coin.symbol);
+                selectCryptocurrency.append(option);
+            }
+        });
+
+        function calculateCryptoAmount() {
+            var selectedCrypto = $('#id_cryptocurrency').val();
+            var selectedCoin = coins.find(coin => coin.symbol === selectedCrypto);
+            var marketPrice = selectedCoin ? selectedCoin.price : 0;
+            var localCurrencyAmount = $('#id_local_currency_amount').val();
+            var cryptoAmount = localCurrencyAmount / marketPrice;
+            $('#id_crypto_amount').val(cryptoAmount.toFixed(8));
+        }
+
+        $('#id_local_currency_amount').on('input', calculateCryptoAmount);
+        $('#id_cryptocurrency').change(calculateCryptoAmount);
+
+        $('#id_cryptocurrency').change(function () {
+            const selectedCrypto = $(this).val();
+            const selectedCoin = coins.find(coin => coin.symbol === selectedCrypto);
+            const iconUrl = selectedCoin ? selectedCoin.iconUrl : '';
+            $('#crypto-icon').attr('src', iconUrl);
+        });
+    });
+</script>
+
+
+
+{% endblock %}

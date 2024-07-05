@@ -1,0 +1,10 @@
+{% extends 'cripto/base.html' %}
+
+{% block title %}Cierre de Sesión{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Has cerrado sesión exitosamente</h2>
+    <a href="{% url 'index' %}">Volver al inicio</a>
+</div>
+{% endblock %}

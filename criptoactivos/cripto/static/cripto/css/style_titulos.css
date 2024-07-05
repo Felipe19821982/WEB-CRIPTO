@@ -1,0 +1,19 @@
+.centered {
+    text-align: center;
+}
+
+.white-text {
+    color: white;
+}
+
+h2 {
+    margin-top: 100px; /* Usamos porcentaje para hacerlo responsivo */
+    font-size: 3rem; /* Tamaño de fuente inicial */
+}
+
+@media screen and (max-width: 768px) {
+    /* Media query para ajustar el tamaño del título en dispositivos más pequeños */
+    h2 {
+        font-size: 2rem; /* Tamaño de fuente más pequeño para pantallas más pequeñas */
+    }
+}

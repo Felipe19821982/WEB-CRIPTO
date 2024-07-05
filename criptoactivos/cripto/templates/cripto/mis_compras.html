@@ -1,0 +1,48 @@
+<!-- cripto/templates/cripto/mis_compras.html -->
+{% extends 'cripto/base.html' %}
+{% load static %}
+
+{% block title %}Mis Compras{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'cripto/css/style_mis_compras.css' %}">
+<div class="container mt-5">
+    <h2 class="text-center">Mis Compras</h2>
+    {% if compras %}
+        <div class="table-responsive">
+            <table class="table table-dark table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>RUN</th>
+                        <th>Criptomoneda</th>
+                        <th>Monto Local</th>
+                        <th>Cantidad Cripto</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for compra in compras %}
+                    <tr>
+                        <td>{{ compra.id }}</td>
+                        <td>{{ compra.first_name }}</td>
+                        <td>{{ compra.last_name }}</td>
+                        <td>{{ compra.run }}</td>
+                        <td>{{ compra.cryptocurrency }}</td>
+                        <td>{{ compra.local_currency_amount }}</td>
+                        <td>{{ compra.crypto_amount }}</td>
+                        <td>{{ compra.created_at }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <p class="text-center">No has realizado ninguna compra.</p>
+    {% endif %}
+</div>
+
+
+{% endblock %}

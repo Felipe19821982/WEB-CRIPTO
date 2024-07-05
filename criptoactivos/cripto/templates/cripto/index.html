@@ -1,0 +1,59 @@
+{% extends 'cripto/base.html' %}
+{% load static %}
+
+{% block title %}Inicio - Mi Sitio{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Asesoría especializada en Criptomonedas en Chile</h1>
+    <p>¿Interesado en Bitcoin, Ethereum u otras criptomonedas?</p>
+    <p>¿Quieres aprender más o necesitas entender la situación actual de estos activos? ¡Estamos aquí para ayudarte!</p>
+    <p>Ofrecemos asesoría legal, contable y tributaria en el fascinante mundo de las criptomonedas. Nuestro equipo experto está listo para guiarte en tus decisiones financieras.</p>
+    <p><a href="{% url 'contacto' %}" class="btn">¡Contáctanos hoy mismo para empezar!</a></p>
+</div>
+
+<section class="game-section">
+    <div class="owl-carousel custom-carousel owl-theme">
+        <div class="item" style="background-image: url('{% static 'cripto/images/bitcoin.webp' %}');">
+            <div class="item-desc">
+                <h3>Bitcoin</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+        </div>
+        <div class="item" style="background-image: url('{% static 'cripto/images/shiba.jpg' %}');">
+            <div class="item-desc">
+                <h3>Shiba Inu</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+        </div>
+        <div class="item" style="background-image: url('{% static 'cripto/images/doge.jpg' %}');">
+            <div class="item-desc">
+                <h3>Dogecoin</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+        </div>
+        <div class="item" style="background-image: url('{% static 'cripto/images/solana.webp' %}');">
+            <div class="item-desc">
+                <h3>Solana</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+        </div>
+        <div class="item" style="background-image: url('{% static 'cripto/images/ethereum.jpeg' %}');">
+            <div class="item-desc">
+                <h3>Ethereum</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+        </div>
+        <div class="item" style="background-image: url('{% static 'cripto/images/polygon.jpeg' %}');">
+            <div class="item-desc">
+                <h3>Polygon</h3>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            </div>
+        </div>
+    </div>
+    <h2 class="line-title">Trending Games</h2>
+</section>
+
+
+
+{% endblock content %}

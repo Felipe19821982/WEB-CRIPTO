@@ -1,0 +1,48 @@
+/* General table styles */
+.table-dark {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table-dark th,
+.table-dark td {
+    border: 1px solid #414141;
+}
+
+.table-dark thead th {
+    background-color: #007BFF;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+.table-dark tbody tr:hover {
+    background-color: rgba(0, 123, 255, 0.5);
+}
+
+.table-dark td,
+.table-dark th {
+    padding: 15px;
+    text-align: center;
+}
+
+/* Container and text styles */
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.text-center {
+    text-align: center;
+}
+
+.mt-5 {
+    margin-top: 3rem;
+}

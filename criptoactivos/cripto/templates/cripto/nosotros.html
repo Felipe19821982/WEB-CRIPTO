@@ -1,0 +1,46 @@
+{% extends 'cripto/base.html' %}
+{% load static %}
+
+{% block title %}Nosotros - Mi Sitio{% endblock %}
+
+{% block bootstrap_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+{% endblock %}
+
+{% block content %}
+<br>
+    <div class="container_con">
+        <div class="row">
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="card card-with-bg mb-3">
+                    <img class="card-img-top img-fluid square-img" src="{% static 'cripto/images/Felipe.jpeg' %}" alt="Felipe Madrid">
+                    <div class="card-body">
+                        <h5 class="card-title">Felipe Madrid</h5> <!-- Agregando el nombre -->
+                        <p class="card-text">Con más de una década de experiencia en el mercado, nuestro equipo en constante crecimiento se dedica a ofrecerte soluciones innovadoras y personalizadas. Desde el diseño hasta la implementación, estamos comprometidos con la excelencia en cada proyecto que emprendemos</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="card card-with-bg mb-3">
+                    <img class="card-img-top img-fluid square-img" src="{% static 'cripto/images/Pablo.jpg' %}" alt="Pablo Baez">
+                    <div class="card-body">
+                        <h5 class="card-title">Pablo Baez</h5> <!-- Agregando el nombre -->
+                        <p class="card-text">En el corazón de nuestra empresa está el compromiso con la calidad y la satisfacción del cliente. Nuestro equipo multidisciplinario de profesionales apasionados trabaja incansablemente para brindarte servicios y productos que superen tus expectativas y fortalezcan tu confianza en nosotros.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 col-sm-12">
+                <div class="card card-with-bg mb-3">
+                    <img class="card-img-top img-fluid square-img" src="{% static 'cripto/images/Sergio.jpg' %}" alt="Sergio Bravo">
+                    <div class="card-body">
+                        <h5 class="card-title">Sergio Bravo</h5> <!-- Agregando el nombre -->
+                        <p class="card-text">Somos más que un equipo; somos una familia unida por la visión de proporcionar soluciones creativas y eficaces. Con un enfoque centrado en el cliente y una ética de trabajo inquebrantable, estamos listos para enfrentar cualquier desafío y ayudarte a alcanzar tus metas con éxito.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    
+{% endblock %}
